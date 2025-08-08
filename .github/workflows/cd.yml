@@ -40,6 +40,12 @@ jobs:
       - name: Build and push Docker image
         run: gcloud builds submit --tag us-central1-docker.pkg.dev/red-girder-468300-f2/notely-ar-repo/notely:latest .
 
+      - name: Debug DATABASE_URL
+        run: echo "DATABASE_URL starts with ${DATABASE_URL:0:20}"
+
+      - name: Check if DATABASE_URL is set
+        run: '[ -z "$DATABASE_URL" ] && echo "DATABASE_URL is empty" || echo "DATABASE_URL is set"'
+      
       - name: Run Goose Migrations
         run: goose sqlite3 "$DATABASE_URL" up -dir sql/schema
 
